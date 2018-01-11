@@ -1,4 +1,5 @@
 import logging
+import employee
 
 """
 # DEBUG : Detailed information ,typically of interest only when diagnosing problems
@@ -13,8 +14,15 @@ The software is still working as expected.
 """
 
 # changing logging default configurations
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
-logging.basicConfig(filename='python.log', level=logging.DEBUG, format='%(asctime)s^%(levelname)s^%(message)s')
+file_handler = logging.FileHandler('basic.log')
+file_handler.setLevel(logging.ERROR)
+formatter = logging.Formatter('%(name)s->%(asctime)s->%(levelname)s->%(message)s')
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 
 def add(x, y):
@@ -30,11 +38,16 @@ def multiply(x, y):
 
 
 def divide(x, y):
-    return x / y
+    try:
+        result = x / y
+    except ZeroDivisionError:
+        logger.error("Tried to divide by zero")
+    else:
+        return result
 
 
 num1 = 5
-num2 = 10
+num2 = 0
 
 add_result = add(num1, num2)
 sub_result = subtract(num1, num2)
@@ -42,10 +55,10 @@ mul_result = multiply(num1, num2)
 div_result = divide(num1, num2)
 
 if add_result == 15:
-    logging.info("Addition works perfectly.")
+    logger.debug("Addition works perfectly.")
 elif add_result < 15:
-    logging.warning("Its horrible add function.")
+    logger.warning("Its horrible add function.")
 elif add_result < 0:
-    logging.debug("Gosh, you got to test your function.")
+    logger.info("Gosh, you got to test your function.")
 else:
-    logging.critical("I have no idea what's going on.")
+    logger.critical("I have no idea what's going on.")
