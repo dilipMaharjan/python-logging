@@ -1,15 +1,6 @@
-import logging
+from logger_config import logger
 
-# changing logging default configurations
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-file_handler = logging.FileHandler('employee.log')
-
-formatter = logging.Formatter('%(name)s->%(asctime)s->%(levelname)s->%(message)s')
-file_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
+logger = logger('employee.log', __file__, 'file')
 
 
 class Employee:
@@ -26,3 +17,6 @@ class Employee:
 
 emp1 = Employee('John', 'Doe')
 emp2 = Employee('Jane', 'Doe')
+
+if emp1.first != 'Dilip':
+    logger.error("Invalid first name")
